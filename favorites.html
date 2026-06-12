@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Favorites - Series Tracker</title>
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="favorites.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <!-- Opening Animation -->
+    <div id="openingAnimation" class="opening-animation">
+        <div class="animation-content">
+            <h1 class="animation-title">⭐ Favorites ⭐</h1>
+            <div class="falling-stars">
+                <i class="fas fa-star falling-star" style="left: 10%; animation-delay: 0s;"></i>
+                <i class="fas fa-star falling-star" style="left: 25%; animation-delay: 0.3s;"></i>
+                <i class="fas fa-star falling-star" style="left: 40%; animation-delay: 0.6s;"></i>
+                <i class="fas fa-star falling-star" style="left: 55%; animation-delay: 0.2s;"></i>
+                <i class="fas fa-star falling-star" style="left: 70%; animation-delay: 0.5s;"></i>
+                <i class="fas fa-star falling-star" style="left: 85%; animation-delay: 0.4s;"></i>
+                <i class="fas fa-star falling-star" style="left: 15%; animation-delay: 0.7s;"></i>
+                <i class="fas fa-star falling-star" style="left: 50%; animation-delay: 0.1s;"></i>
+                <i class="fas fa-star falling-star" style="left: 75%; animation-delay: 0.8s;"></i>
+                <i class="fas fa-star falling-star" style="left: 95%; animation-delay: 0.9s;"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Secondary Bar (not sticky) -->
+        <div class="secondary-bar">
+            <button class="secondary-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="secondary-title">
+                <i class="fas fa-star"></i>
+                <h1>My Favorites</h1>
+            </div>
+            <button class="secondary-btn" id="profileNavBtn">
+                <i class="fas fa-user-circle"></i>
+            </button>
+        </div>
+
+        <div class="container">
+                        <!-- User Greeting Card -->
+            <div class="greeting-card">
+                <div class="greeting-card-content">
+                    <div class="greeting-avatar">
+                        <img id="greetingAvatar" class="greeting-avatar-img" src="https://ui-avatars.com/api/?background=2563EB&color=fff&bold=true&size=80&name=User" alt="Profile">
+                    </div>
+                    <div class="greeting-info">
+                        <h3 id="greetingUserName">Guest User</h3>
+                        <p id="greetingText">Good Morning!</p>
+                        <p id="liveClock" class="greeting-clock">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span>Your favorite series, anime, manga, and movies. Click the star to remove from favorites.</span>
+            </div>
+
+            <!-- Favorites Count Bar -->
+            <div class="favorites-count-bar">
+                <i class="fas fa-star"></i>
+                <span id="favoritesCount">0</span>
+                <span>Favorite Items</span>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="filter-section">
+                <label><i class="fas fa-filter"></i> Filter by Category</label>
+                <div id="categoryFilters" class="filter-chips"></div>
+            </div>
+
+            <!-- Favorites Grid -->
+            <div id="favoritesGrid" class="favorites-grid">
+                <!-- Dynamic content -->
+                <div class="empty-state">
+                    <i class="fas fa-star"></i>
+                    <p>No favorites yet</p>
+                    <p class="empty-hint">Add items to favorites from the Add page or by clicking the star on any card</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bar -->
+        <div id="footerBar" class="footer-bar">
+            <p>© 2026 Series Tracker | Track your favorite series easily</p>
+        </div>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="theme.js"></script>
+    <script src="app.js"></script>
+    <script src="favorites.js"></script>
+</body>
+</html>

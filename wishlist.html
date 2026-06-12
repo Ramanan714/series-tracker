@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Wishlist - Series Tracker</title>
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="wishlist.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <!-- Opening Animation -->
+    <div id="openingAnimation" class="opening-animation">
+        <div class="animation-content">
+            <div class="beating-heart">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h1 class="animation-title">Wishlist</h1>
+            <div class="heart-waves">
+                <div class="wave wave1"></div>
+                <div class="wave wave2"></div>
+                <div class="wave wave3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Secondary Bar (not sticky) -->
+        <div class="secondary-bar">
+            <button class="secondary-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="secondary-title">
+                <i class="fas fa-heart"></i>
+                <h1>My Wishlist</h1>
+            </div>
+            <button class="secondary-btn" id="addWishlistBtn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+
+        <div class="container">
+                        <!-- User Greeting Card -->
+            <div class="greeting-card">
+                <div class="greeting-card-content">
+                    <div class="greeting-avatar">
+                        <img id="greetingAvatar" class="greeting-avatar-img" src="https://ui-avatars.com/api/?background=2563EB&color=fff&bold=true&size=80&name=User" alt="Profile">
+                    </div>
+                    <div class="greeting-info">
+                        <h3 id="greetingUserName">Guest User</h3>
+                        <p id="greetingText">Good Morning!</p>
+                        <p id="liveClock" class="greeting-clock">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span>Your plan to watch list. Items here have priority levels (High, Medium, Low).</span>
+            </div>
+
+            <!-- Wishlist Count Bar -->
+            <div class="wishlist-count-bar">
+                <i class="fas fa-heart"></i>
+                <span id="wishlistCount">0</span>
+                <span>Items in Wishlist</span>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="filter-section">
+                <label><i class="fas fa-filter"></i> Filter by Category</label>
+                <div id="categoryFilters" class="filter-chips"></div>
+            </div>
+
+            <!-- Wishlist Grid -->
+            <div id="wishlistGrid" class="wishlist-grid">
+                <div class="empty-state">
+                    <i class="fas fa-heart"></i>
+                    <p>No items in wishlist yet</p>
+                    <p class="empty-hint">Add items with "Plan to Watch" status from the Add page</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bar -->
+        <div id="footerBar" class="footer-bar">
+            <p>© 2026 Series Tracker | Track your favorite series easily</p>
+        </div>
+    </div>
+
+    <!-- Move Status Popup Modal -->
+    <div id="moveStatusModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content small-modal">
+            <div class="modal-header">
+                <i class="fas fa-arrow-right"></i>
+                <h3>Move to Status</h3>
+                <button class="modal-close" onclick="closeMoveStatusModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Select new status for this item:</p>
+                <div class="status-options">
+                    <button class="status-option" data-status="Watching">
+                        <i class="fas fa-eye"></i> Watching
+                    </button>
+                    <button class="status-option" data-status="On Hold">
+                        <i class="fas fa-pause"></i> On Hold
+                    </button>
+                    <button class="status-option" data-status="Completed">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </button>
+                    <button class="status-option" data-status="Dropped">
+                        <i class="fas fa-ban"></i> Dropped
+                    </button>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" onclick="closeMoveStatusModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal (reused from add page) -->
+    <div id="addEditModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-plus-circle"></i>
+                <h3 id="modalTitle">Add to Wishlist</h3>
+                <button class="modal-close" onclick="closeAddEditModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="wishlistForm">
+                    <input type="hidden" id="editItemId">
+                    <div class="form-group">
+                        <label>Title <span class="required">*</span></label>
+                        <input type="text" id="itemTitle" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="itemCategory" class="form-input"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="itemPriority" class="form-input">
+                            <option value="High">🔴 High</option>
+                            <option value="Medium" selected>🟡 Medium</option>
+                            <option value="Low">🟢 Low</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Progress</label>
+                        <input type="text" id="itemProgress" class="form-input" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label>Season</label>
+                        <input type="text" id="itemSeason" class="form-input" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="itemNotes" class="form-textarea" rows="2" placeholder="Add notes..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" onclick="closeAddEditModal()">Cancel</button>
+                <button class="modal-btn confirm-btn" id="saveWishlistBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Details Modal -->
+    <div id="viewModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-info-circle"></i>
+                <h3 id="viewTitle">Item Details</h3>
+                <button class="modal-close" onclick="closeViewModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="viewDetails">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" onclick="closeViewModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="theme.js"></script>
+    <script src="app.js"></script>
+    <script src="wishlist.js"></script>
+</body>
+</html>

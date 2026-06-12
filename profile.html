@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Profile - Series Tracker</title>
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="profile.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div id="loadingAnimation" class="loading-animation">
+        <div class="loading-glass-card">
+            <div class="loading-avatar">
+                <div class="loading-avatar-placeholder">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+            <div class="loading-username">Loading Profile...</div>
+            <div class="loading-progress-container">
+                <div class="loading-progress-bar" id="loadingProgressBar">
+                    <div class="loading-progress-fill" id="loadingProgressFill">
+                        <div class="loading-flame" id="loadingFlame">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="loading-percentage" id="loadingPercentage">0%</div>
+            </div>
+            <div class="loading-hint">
+                <i class="fas fa-mouse-pointer"></i> Click anywhere to skip animation
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Secondary Bar (not sticky) -->
+        <div class="secondary-bar">
+            <button class="secondary-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="secondary-title">
+                <i class="fas fa-user-circle"></i>
+                <h1>My Profile</h1>
+            </div>
+            <button class="secondary-btn" id="refreshBtn">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+
+        <div class="container">
+            <!-- Info Box -->
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span>Manage your profile, view statistics, and export/import your data.</span>
+            </div>
+
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="avatar-section">
+                    <div class="avatar-container">
+                        <img id="profileAvatar" class="avatar-img" src="https://ui-avatars.com/api/?background=2563EB&color=fff&bold=true&size=120&name=User" alt="Profile">
+                        <button class="edit-avatar-btn" id="editAvatarBtn">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <div class="user-name-section">
+                        <h2 id="userName">Guest User</h2>
+                        <button class="edit-name-btn" id="editNameBtn">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                    </div>
+                    <p id="greetingText" class="profile-greeting">Good Morning!</p>
+                    <p id="liveClock" class="profile-clock">--</p>
+                </div>
+            </div>
+
+            <!-- Quick Stats Grid -->
+            <div class="quick-stats-grid">
+                <div class="stat-card-outline" data-stat="total">
+                    <i class="fas fa-layer-group"></i>
+                    <div>
+                        <span class="stat-number" id="totalItemsCount">0</span>
+                        <span class="stat-label">Total Items</span>
+                    </div>
+                </div>
+                <div class="stat-card-outline" data-stat="categories">
+                    <i class="fas fa-folder"></i>
+                    <div>
+                        <span class="stat-number" id="totalCategoriesCount">0</span>
+                        <span class="stat-label">Categories</span>
+                    </div>
+                </div>
+                <div class="stat-card-outline" data-stat="favorites">
+                    <i class="fas fa-star"></i>
+                    <div>
+                        <span class="stat-number" id="favoritesCount">0</span>
+                        <span class="stat-label">Favorites</span>
+                    </div>
+                </div>
+                <div class="stat-card-outline" data-stat="wishlist">
+                    <i class="fas fa-heart"></i>
+                    <div>
+                        <span class="stat-number" id="wishlistCount">0</span>
+                        <span class="stat-label">Wishlist</span>
+                    </div>
+                </div>
+                <div class="stat-card-outline" data-stat="completed">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <span class="stat-number" id="completedCount">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Buttons Row -->
+            <div class="status-row">
+                <button class="status-btn" data-status="Watching">
+                    <i class="fas fa-eye"></i> Watching
+                </button>
+                <button class="status-btn" data-status="Plan to Watch">
+                    <i class="fas fa-calendar-plus"></i> Plan to Watch
+                </button>
+                <button class="status-btn" data-status="On Hold">
+                    <i class="fas fa-pause"></i> On Hold
+                </button>
+                <button class="status-btn" data-status="Dropped">
+                    <i class="fas fa-ban"></i> Dropped
+                </button>
+            </div>
+
+            <!-- Charts Section (Vertical) -->
+            <div class="charts-section-vertical">
+                <div class="chart-container">
+                    <h3><i class="fas fa-chart-pie"></i> Category Distribution</h3>
+                    <canvas id="categoryChart" width="300" height="300"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3><i class="fas fa-chart-pie"></i> Status Distribution</h3>
+                    <canvas id="statusChart" width="300" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- Data Management Section -->
+            <div class="data-management">
+                <h3><i class="fas fa-database"></i> Data Management</h3>
+                <div class="management-buttons">
+                    <button class="manage-btn export" id="exportDataBtn">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <button class="manage-btn import" id="importDataBtn">
+                        <i class="fas fa-upload"></i> Import Data
+                    </button>
+                    <button class="manage-btn reset" id="resetDataBtn">
+                        <i class="fas fa-trash-alt"></i> Reset All Data
+                    </button>
+                </div>
+            </div>
+                       
+            
+
+            <!-- About & Info Section -->
+            <div class="about-section">
+                <div class="about-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>About Series Tracker</h3>
+                </div>
+                <div class="about-content">
+                    <div class="creator-info">
+                        <i class="fas fa-code"></i>
+                        <div>
+                            <strong>Created by:</strong> Arjun
+                            <span class="badge beta">Beta Version</span>
+                        </div>
+                    </div>
+                    <div class="version-info">
+                        <i class="fas fa-tag"></i>
+                        <div><strong>Version:</strong> 1.0.0 Beta</div>
+                    </div>
+                    <div class="status-info">
+                        <i class="fas fa-flask"></i>
+                        <div><strong>Status:</strong> Active Development - Beta Release</div>
+                    </div>
+                    <div class="description">
+                        <i class="fas fa-heart"></i>
+                        <p>Series Tracker is a powerful web app to track your favorite series, anime, movies, manga, and more. Built with passion by Arjun.</p>
+                    </div>
+                    <div class="support-message">
+                        <i class="fas fa-hands-helping"></i>
+                        <p>🌟 This is a Beta version! Your feedback and support help make this app better. Please report any issues or suggest features!</p>
+                    </div>
+                    <div class="features-list">
+                        <h4><i class="fas fa-star"></i> Features:</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Track multiple series across categories</li>
+                            <li><i class="fas fa-check-circle"></i> Mark favorites and wishlist items</li>
+                            <li><i class="fas fa-check-circle"></i> Export/Import your data anytime</li>
+                            <li><i class="fas fa-check-circle"></i> Dark/Light theme support</li>
+                            <li><i class="fas fa-check-circle"></i> Telegram Web App integration</li>
+                        </ul>
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-envelope"></i>
+                        <p>📧 Contact: <a href="#" onclick="showToast('Contact feature coming soon!', 'info')">arjun@seriestracker.com</a></p>
+                    </div>
+                    <div class="copyright">
+                        <i class="fas fa-copyright"></i>
+                        <p>© 2024 Series Tracker | All data stored locally in your browser</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bar -->
+        <div id="footerBar" class="footer-bar">
+            <p>© 2026 Series Tracker | Track your favorite series easily</p>
+        </div>
+    </div>
+
+    <!-- Edit Name Modal - Modern -->
+<div id="editNameModal" class="modal-overlay modern-edit-modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header blue-header">
+            <i class="fas fa-user-edit"></i>
+            <h3>Edit Username</h3>
+            <button class="modal-close" onclick="closeEditNameModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="modern-input-group">
+                <label><i class="fas fa-user"></i> Your Name</label>
+                <input type="text" id="newUserName" class="modern-input" placeholder="Enter your name" autocomplete="off">
+            </div>
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-btn cancel-btn" onclick="closeEditNameModal()">Cancel</button>
+            <button class="modal-btn confirm-btn" id="saveNameBtn">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+    <!-- Image Upload Modal -->
+    <div id="imageUploadModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content small-modal">
+            <div class="modal-header blue-header">
+                <i class="fas fa-image"></i>
+                <h3>Upload Profile Image</h3>
+                <button class="modal-close" onclick="closeImageUploadModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="image-preview-container">
+                    <img id="imagePreview" class="image-preview" src="https://ui-avatars.com/api/?background=2563EB&color=fff&bold=true&size=120&name=User" alt="Preview">
+                </div>
+                <input type="file" id="imageUpload" accept="image/*" class="form-input" style="margin-top: 15px;">
+                <div class="avatar-colors-note">
+                    <p>Or choose a color:</p>
+                    <div class="avatar-colors-mini">
+                        <div class="color-mini" data-color="2563EB" style="background: #2563EB;"></div>
+                        <div class="color-mini" data-color="DC2626" style="background: #DC2626;"></div>
+                        <div class="color-mini" data-color="10B981" style="background: #10B981;"></div>
+                        <div class="color-mini" data-color="F59E0B" style="background: #F59E0B;"></div>
+                        <div class="color-mini" data-color="8B5CF6" style="background: #8B5CF6;"></div>
+                        <div class="color-mini" data-color="EC4899" style="background: #EC4899;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" onclick="closeImageUploadModal()">Cancel</button>
+                <button class="modal-btn confirm-btn" id="saveImageBtn">Save Image</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data View Modal (Reusable for all popups) -->
+    <div id="dataViewModal" class="modal-overlay modal-large" style="display: none;">
+        <div class="modal-content modal-large-content">
+            <div class="modal-header blue-header">
+                <i class="fas fa-chart-simple"></i>
+                <h3 id="dataModalTitle">Items</h3>
+                <button class="modal-close" onclick="closeDataViewModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="dataModalBody">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" onclick="closeDataViewModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Detail Modal -->
+    <div id="itemDetailModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header blue-header">
+                <i class="fas fa-info-circle"></i>
+                <h3 id="detailTitle">Item Details</h3>
+                <button class="modal-close" onclick="closeItemDetailModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="itemDetailBody">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" onclick="closeItemDetailModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="theme.js"></script>
+    <script src="app.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

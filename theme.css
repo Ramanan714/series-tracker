@@ -1,0 +1,522 @@
+/* theme.css - Blue + White Theme with Font Awesome */
+
+:root {
+    /* Default Theme (Blue + White) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f0f7ff;
+    --text-primary: #1a2a3a;
+    --text-secondary: #5a6a7a;
+    --border-color: #dce5f0;
+    --card-bg: #ffffff;
+    --primary-color: #2563EB;
+    --primary-dark: #1D4ED8;
+    --primary-light: #60A5FA;
+    --danger-color: #dc3545;
+    --danger-hover: #c82333;
+    --success-color: #28a745;
+    --success-hover: #218838;
+    --warning-color: #ffc107;
+    --warning-hover: #e0a800;
+    --shadow: 0 2px 12px rgba(37, 99, 235, 0.12);
+    --shadow-hover: 0 4px 20px rgba(37, 99, 235, 0.2);
+}
+
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --card-bg: #ffffff;
+    --primary-color: #2563EB;
+    --primary-dark: #1D4ED8;
+    --primary-light: #60A5FA;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+    --card-bg: #1e293b;
+    --primary-color: #3B82F6;
+    --primary-dark: #2563EB;
+    --primary-light: #60A5FA;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+}
+
+/* ============ TOP BAR STYLES ============ */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 1000;
+    box-shadow: var(--shadow);
+}
+
+.hamburger-menu,
+.settings-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.2s;
+    background: transparent;
+    border: none;
+}
+
+/* Icons on blue background = WHITE */
+.hamburger-menu i,
+.settings-btn i {
+    color: #FFFFFF !important;
+    font-size: 1.3rem;
+}
+
+.hamburger-menu:hover,
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.logo-area:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+}
+
+/* TV icon and text on blue background = WHITE */
+.logo-area i {
+    color: #FFFFFF !important;
+    font-size: 1.6rem;
+}
+
+.logo-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #FFFFFF !important;
+    letter-spacing: 0.5px;
+}
+
+/* ============ POPUP OVERLAY ============ */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+    backdrop-filter: blur(2px);
+}
+
+.popup-overlay.active {
+    display: block;
+}
+
+/* ============ SIDE POPUPS ============ */
+.side-popup {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 340px;
+    max-width: 85%;
+    background: var(--bg-primary);
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+}
+
+.left-popup {
+    left: 0;
+    transform: translateX(-100%);
+}
+
+.left-popup.open {
+    transform: translateX(0);
+}
+
+.right-popup {
+    right: 0;
+    transform: translateX(100%);
+}
+
+.right-popup.open {
+    transform: translateX(0);
+}
+
+/* Popup Header */
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 2px solid var(--primary-color);
+    background: var(--bg-primary);
+}
+
+/* Icons in popup header = BLUE (on white background) */
+.popup-header h3 {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.popup-header h3 i {
+    color: var(--primary-color) !important;
+    font-size: 1.3rem;
+}
+
+.close-popup {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.close-popup i {
+    color: var(--text-secondary) !important;
+    font-size: 1.2rem;
+}
+
+.close-popup:hover {
+    background: var(--bg-secondary);
+}
+
+.close-popup:hover i {
+    color: var(--danger-color) !important;
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 12px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid var(--border-color);
+}
+
+/* Default state: icons on white background = BLUE */
+.nav-link i {
+    color: var(--primary-color) !important;
+    font-size: 1.2rem;
+    width: 24px;
+}
+
+.nav-link span {
+    color: var(--text-primary);
+}
+
+.nav-link:hover {
+    background: var(--primary-color);
+    transform: translateX(5px);
+    border-color: var(--primary-color);
+}
+
+/* Hover state: icons and text on blue background = WHITE */
+.nav-link:hover i,
+.nav-link:hover span {
+    color: #FFFFFF !important;
+}
+
+/* Active page: blue background with white icons and text */
+.nav-link.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.nav-link.active i,
+.nav-link.active span {
+    color: #FFFFFF !important;
+}
+
+/* Settings Content */
+.settings-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.settings-section {
+    margin-bottom: 28px;
+}
+
+.settings-section h4 {
+    font-size: 1rem;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Icons in section headers = BLUE */
+.settings-section h4 i {
+    color: var(--primary-color) !important;
+    font-size: 1rem;
+}
+
+.theme-options {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.theme-option {
+    flex: 1;
+    min-width: 90px;
+    padding: 10px 12px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Default state: icons on white background = BLUE */
+.theme-option i {
+    color: var(--primary-color) !important;
+    font-size: 1rem;
+}
+
+.theme-option span {
+    color: var(--text-primary);
+}
+
+.theme-option:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-light);
+}
+
+.theme-option:hover i,
+.theme-option:hover span {
+    color: #FFFFFF !important;
+}
+
+/* Active theme option: blue background with white icons */
+.theme-option.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.theme-option.active i,
+.theme-option.active span {
+    color: #FFFFFF !important;
+}
+
+.settings-action-btn {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Default state: icons on white background = BLUE */
+.settings-action-btn i {
+    color: var(--primary-color) !important;
+    font-size: 1.1rem;
+    width: 24px;
+}
+
+.settings-action-btn span {
+    color: var(--text-primary);
+}
+
+.settings-action-btn:hover {
+    background: var(--primary-color);
+    transform: translateX(5px);
+}
+
+/* Hover state: icons and text on blue background = WHITE */
+.settings-action-btn:hover i,
+.settings-action-btn:hover span {
+    color: #FFFFFF !important;
+}
+
+.settings-action-btn.danger:hover {
+    background: var(--danger-color);
+}
+
+.settings-action-btn.danger:hover i,
+.settings-action-btn.danger:hover span {
+    color: #FFFFFF !important;
+}
+
+.settings-section p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+/* ============ NOTIFICATION ============ */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 12px;
+    color: white;
+    z-index: 2000;
+    animation: slideUp 0.3s ease;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification i {
+    font-size: 1.1rem;
+    color: #FFFFFF !important;
+}
+
+.notification-success {
+    background: var(--success-color);
+}
+
+.notification-error {
+    background: var(--danger-color);
+}
+
+.notification-info {
+    background: var(--primary-color);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ============ SCROLLBAR ============ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-light);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* ============ UTILITIES ============ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .logo-text {
+        display: none;
+    }
+    
+    .side-popup {
+        width: 280px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-area i {
+        font-size: 1.3rem;
+    }
+    
+    .top-bar {
+        padding: 0 12px;
+    }
+    
+    .theme-options {
+        flex-direction: column;
+    }
+}

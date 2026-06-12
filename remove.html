@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Remove Items - Series Tracker</title>
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="remove.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+        <!-- Remove Page Loading Animation -->
+    <div id="loadingAnimation" class="loading-animation remove-animation">
+        <div class="loading-glass-card remove-glass-card">
+            <div class="loading-icon">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+            <div class="loading-title">Remove Items</div>
+            <div class="loading-progress-container">
+                <div class="loading-progress-bar">
+                    <div class="loading-progress-fill" id="removeProgressFill">
+                        <div class="loading-flame" id="removeFlame">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="loading-percentage" id="removePercentage">0%</div>
+            </div>
+            <div class="loading-hint">
+                <i class="fas fa-mouse-pointer"></i> Click anywhere to skip
+            </div>
+        </div>
+    </div>
+    <div class="app-container">
+        <!-- Secondary Bar (not sticky) -->
+        <div class="secondary-bar">
+            <button class="secondary-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="secondary-title">
+                <i class="fas fa-trash-alt"></i>
+                <h1>Remove Series/Category</h1>
+            </div>
+            <button class="secondary-btn" id="addBtn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+
+        <div class="container">
+                        <!-- User Greeting Card -->
+            <div class="greeting-card">
+                <div class="greeting-card-content">
+                    <div class="greeting-avatar">
+                        <img id="greetingAvatar" class="greeting-avatar-img" src="https://ui-avatars.com/api/?background=2563EB&color=fff&bold=true&size=80&name=User" alt="Profile">
+                    </div>
+                    <div class="greeting-info">
+                        <h3 id="greetingUserName">Guest User</h3>
+                        <p id="greetingText">Good Morning!</p>
+                        <p id="liveClock" class="greeting-clock">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span>Select series or categories to remove. Deleted items cannot be recovered.</span>
+            </div>
+
+            <!-- Delete Mode Selection -->
+            <div class="mode-selection">
+                <button id="deleteSeriesMode" class="mode-btn active">
+                    <i class="fas fa-tv"></i> Delete Series
+                </button>
+                <button id="deleteCategoryMode" class="mode-btn">
+                    <i class="fas fa-folder"></i> Delete Category
+                </button>
+            </div>
+
+            <!-- Bulk Action Buttons -->
+            <div class="bulk-actions">
+                <button id="selectAllBtn" class="bulk-btn"><i class="fas fa-check-double"></i> Select All</button>
+                <button id="deselectAllBtn" class="bulk-btn"><i class="fas fa-square"></i> Deselect All</button>
+            </div>
+
+            <!-- SERIES MODE CONTENT -->
+            <div id="seriesModeContent" class="mode-content">
+                <!-- Filters Section -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label><i class="fas fa-tags"></i> Categories</label>
+                        <div id="categoryFilters" class="filter-chips"></div>
+                    </div>
+                    <div class="filter-group">
+                        <label><i class="fas fa-filter"></i> Status</label>
+                        <div id="statusFilters" class="filter-chips"></div>
+                    </div>
+                    <div class="filter-group">
+                        <label><i class="fas fa-sort"></i> Sort By</label>
+                        <div id="sortFilters" class="filter-chips"></div>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="seriesSearchInput" placeholder="Search by title..." class="search-input">
+                    <button id="clearSeriesSearch" class="clear-search-btn"><i class="fas fa-times"></i></button>
+                </div>
+
+                <!-- Series Cards Grid -->
+                <div id="seriesGrid" class="items-grid">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+
+            <!-- CATEGORY MODE CONTENT -->
+            <div id="categoryModeContent" class="mode-content" style="display: none;">
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="categorySearchInput" placeholder="Search by category name..." class="search-input">
+                    <button id="clearCategorySearch" class="clear-search-btn"><i class="fas fa-times"></i></button>
+                </div>
+
+                <!-- Category Cards Grid -->
+                <div id="categoryGrid" class="items-grid">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Fixed Delete Capsule Button -->
+        <button id="fixedDeleteBtn" class="fixed-delete-btn">
+            <i class="fas fa-trash-alt"></i> Delete Selected Items
+        </button>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="theme.js"></script>
+    <script src="app.js"></script>
+    <script src="remove.js"></script>
+</body>
+</html>
